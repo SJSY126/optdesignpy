@@ -1,5 +1,5 @@
 from surface import Surface
-from paraxial_approximation import ABCD_cal
+import paraxial_approximation
 
 
 class Lens():
@@ -12,16 +12,8 @@ class Lens():
     def add_surface(self, number, radius, thickness, glass):
         Surface.add(self, number, radius, thickness, glass)
 
-    def paraxial_approximation_cal(self):
-        self.A, self.B, self.C, self.D = ABCD_cal(self, 0, 1)
-
-
-if __name__ == "__main__":
-    test_lens = Lens()
-    test_lens.Fno = 1.4
-    test_lens.wavelength_list = [587.562]
-
-    test_lens.add_surface(number=1, radius=100, thickness=1, glass='BK7')
-    test_lens.add_surface(number=2, radius=-100, thickness=1, glass='1')
-
-    test_lens.paraxial_approximation_cal()
+    def paraxial_amount(self):
+        self.focal_length = paraxial_approximation.get_focal_length(
+            self, 1, len(self.surface_list)-1)
+        self.total_tarck = paraxial_approximation.get_total_track(
+            self, 1, len(self.surface_list)-1)
